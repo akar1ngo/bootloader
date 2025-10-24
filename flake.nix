@@ -32,16 +32,19 @@
 
         craneLib = (crane.mkLib pkgs).overrideToolchain (
           p:
-          p.rust-bin.stable.latest.default.override {
-            extensions = [
-              "clippy"
-              "rust-docs"
-              "rust-src"
-            ];
-            targets = [
-              "x86_64-unknown-uefi"
-            ];
-          }
+          p.rust-bin.selectLatestNightlyWith (
+            toolchain:
+            toolchain.default.override {
+              extensions = [
+                "clippy"
+                "rust-docs"
+                "rust-src"
+              ];
+              targets = [
+                "x86_64-unknown-uefi"
+              ];
+            }
+          )
         );
 
         my-crate = craneLib.buildPackage {
