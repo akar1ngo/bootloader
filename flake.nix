@@ -30,10 +30,6 @@
           overlays = [ rust-overlay.overlays.default ];
         };
 
-        # NB: we don't need to overlay our custom toolchain for the *entire*
-        # pkgs (which would require rebuidling anything else which uses rust).
-        # Instead, we just want to update the scope that crane will use by appending
-        # our specific toolchain there.
         craneLib = (crane.mkLib pkgs).overrideToolchain (
           p:
           p.rust-bin.stable.latest.default.override {
@@ -70,7 +66,6 @@
             pub fn main() {}
           '';
 
-          # Need a VM to run EFI blobs...
           doCheck = false;
         };
 
@@ -108,8 +103,6 @@
         };
 
         devShells.default = craneLib.devShell {
-          # Extra inputs can be added here; cargo and rustc are provided by default
-          # from the toolchain that was specified earlier.
           packages = [
             pkgs.qemu
           ];
