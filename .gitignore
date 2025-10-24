@@ -1,0 +1,5 @@
+.DS_Store
+.direnv/
+.env*
+/target
+result*

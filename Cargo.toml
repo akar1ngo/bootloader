@@ -1,0 +1,13 @@
+[package]
+name = "hello"
+version = "0.1.0"
+edition = "2024"
+
+[profile.release]
+lto = true
+opt-level = "z"
+strip = true
+
+[dependencies]
+log = "0.4"
+uefi = { version = "0.36", features = ["logger", "panic_handler"] }
