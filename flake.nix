@@ -78,8 +78,8 @@
               nativeBuildInputs = [ pkgs.coreutils ];
             }
             ''
-              install -Dm444 -t $out/efi/boot ${my-crate}/bin/hello.efi
-              mv $out/efi/boot/hello.efi $out/efi/boot/bootx64.efi
+              install -Dm444 -t $out/efi/boot ${my-crate}/bin/bootloader.efi
+              mv $out/efi/boot/bootloader.efi $out/efi/boot/bootx64.efi
             '';
       in
       {
