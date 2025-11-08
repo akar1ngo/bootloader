@@ -37,6 +37,7 @@
             toolchain.default.override {
               extensions = [
                 "clippy"
+                "rust-analyzer"
                 "rust-docs"
                 "rust-src"
               ];
@@ -47,7 +48,7 @@
           )
         );
 
-        my-crate = craneLib.buildPackage {
+        bootloader = craneLib.buildPackage {
           src = craneLib.cleanCargoSource ./.;
           strictDeps = true;
 
@@ -78,19 +79,19 @@
               nativeBuildInputs = [ pkgs.coreutils ];
             }
             ''
-              install -Dm444 -t $out/efi/boot ${my-crate}/bin/bootloader.efi
+              install -Dm444 -t $out/efi/boot ${bootloader}/bin/bootloader.efi
               mv $out/efi/boot/bootloader.efi $out/efi/boot/bootx64.efi
             '';
       in
       {
         checks = {
-          inherit my-crate;
+          inherit bootloader;
         };
 
-        packages.default = my-crate;
+        packages.default = bootloader;
 
         apps.default = flake-utils.lib.mkApp {
-          drv = pkgs.writeShellScriptBin "my-app" ''
+          drv = pkgs.writeShellScriptBin "qemu-run" ''
             set -eu
             workdir=$(mktemp -d)
             trap 'rm -rf "$workdir"' EXIT
